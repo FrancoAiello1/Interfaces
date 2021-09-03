@@ -1,6 +1,9 @@
 let canvas = document.getElementById("myCanvas");
 let ctx = canvas.getContext("2d");
 let imageLoader = document.getElementById('imageLoader');
+let download = document.getElementById('download');
+let clear = document.getElementById('clear');
+let blancoynegro = document.getElementById('blancoynegro');
 
 let width = canvas.width;
 let height = canvas.height;
@@ -18,6 +21,38 @@ function cargarImagen(e) {
     }
     reader.readAsDataURL(e.target.files[0]);
 }
+ clear.addEventListener('click', function(e){
+     ctx.clearRect(0,0, width, height);
+ })
+
+
+download.addEventListener('click',
+function(e){
+    const link = document.createElement('a');
+    link.download = "download.png";
+    link.href = canvas.toDataURL();
+    link.click();
+    link.delete;
+});
+
+blancoynegro.addEventListener('click',
+function(e){
+    let pixelesImagen = ctx.getImageData(0,0,width,height);
+    for (let y = 0; y < height; y++){
+        for (let x = 0; x < width; x++){
+            let index = (x + y * width) * 4;
+            let r = pixelesImagen.data[index];
+            let g = pixelesImagen.data[index + 1];
+            let b = pixelesImagen.data[index + 2];
+    
+            pixelesImagen.data[index] = (r + g + b) /3;
+            pixelesImagen.data[index+1] = (r + g + b) /3;
+            pixelesImagen.data[index+2] = (r + g + b) /3;
+        }
+    }
+    ctx.putImageData(pixelesImagen, 0, 0, 0, 0, width, height);
+})
+
 
 class Element {
  
