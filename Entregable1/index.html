@@ -4,39 +4,51 @@
 
 <head>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>TP Entregable 1</title>
 </head>
 
 <body>
+    <header>
+
+        <ul class="boxes">
+            <li><button type="button" class="fa fa-pencil" id="lapiz"></button></li>
+            <li><button type="button" class="fa fa-eraser" id="goma"></button></li>
+            <li>
+                <select id="color">
+                    <option value="" disabled selected>Color</option>
+                    <option value="rojo">Rojo</option>
+                    <option value="negro">Negro</option>
+                    <option value="azul">Azul</option>
+                    <option value="verde">Verde</option>
+                    <option value="amarillo">Amarillo</option>
+                </select>
+            </li>
+        </ul>
+
+    </header>
     <div id="principal">
-        <div>
-            <ul>
-                <li><button type="button" id="lapiz">Lápiz</button></li>
-                <li><button type="button" id="goma">Goma</button></li>
-                <li>
-                    <select id="color">
-                        <option value="rojo">Rojo</option>
-                        <option value="negro">Negro</option>
-                        <option value="azul">Azul</option>
-                        <option value="verde">Verde</option>
-                        <option value="amarillo">Amarillo</option>
-                    </select>
-                </li>
-            </ul>
+
+
+        <div id=cargadescarga>
+            <label>Cargar imagen</label>
+            <input type="file" id="imageLoader" name="imageLoader" /> 
+            <label>Descargar imagen</label>
+            <button class="fa fa-download" id="download"></button>
         </div>
-        <div>
+        <div id="canvas">
             <canvas id="myCanvas" width="500" height="500" style="border:1px solid #d3d3d3;"></canvas>
         </div>
-        <div>
-            <label>Cargar imagen</label><br />
-            <input type="file" id="imageLoader" name="imageLoader" />
+        <div id="filtros">
+            <button id="clear">Limpiar canvas</button>
+            <button id="blancoynegro">Filtro blanco y negro</button>
         </div>
-        <button id="download">Descargar imagen</button>
-        <button id="clear">Limpiar canvas</button>
-        <button id="blancoynegro">Filtro blanco y negro</button>
 
     </div>
+    <footer>
+        <p> Trabajo práctico entregable N° 1. Aiello, Franco || Moauro, Manuel</p>
+    </footer>
 </body>
 
 <script src="js/app.js"></script>
