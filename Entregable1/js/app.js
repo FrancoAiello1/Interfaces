@@ -11,6 +11,9 @@ let height = canvas.height;
 
 imageLoader.addEventListener('change', cargarImagen, false);
 
+
+//Se inicia una instancia de FileReader y al cargar una imagen este la dibuja en el lienzo, respetando
+//el tamaño del mismo y no rompiendo el aspecto.
 function cargarImagen(e) {
     let reader = new FileReader();
     reader.onload = function (event) {
@@ -26,20 +29,23 @@ function cargarImagen(e) {
      ctx.clearRect(0,0, width, height);
  })
 
-
+//Se le asigna el evento al botón correspondiente a descargar lienzo y se procede a la descarga del mismo
+//utilizando la funcion toDataURL(), descargando con el nombre especificado "lienzo.png"
 download.addEventListener('click',
 function(e){
     const link = document.createElement('a');
-    link.download = "download.png";
+    link.download = "lienzo.png";
     link.href = canvas.toDataURL();
     link.click();
     link.delete;
 });
 
+//Se le asigna el evento al botón correspondiente al filtro negativo y luego se aplica el filtro.
+//Se toma el canvas y a cada pixel se le modifica el valor RGB a el valor opuesto, restándole a 255 el valor
+//actual.
 negativo.addEventListener('click',
 function(e){
     let pixelesImagen = ctx.getImageData(0,0,width,height);
-    let data = pixelesImagen.data;
     for (let i=0; i < pixelesImagen.data.length; i+=4){
         pixelesImagen.data[i] = 255 - pixelesImagen.data[i];
         pixelesImagen.data[i+1] = 255 - pixelesImagen.data[i+1];
@@ -49,6 +55,9 @@ function(e){
     ctx.putImageData(pixelesImagen,0,0)
 })
 
+//Se le asigna el evento al botón correspondiente al filtro de grises y luego se aplica el filtro.
+//Se toma el canvas y a cada pixel se le modifica el valor RGB, obteniendo un promedio de ese valor
+//por cada pixel y haciéndolo el nuevo valor.
 blancoynegro.addEventListener('click',
 function(e){
     let pixelesImagen = ctx.getImageData(0,0,width,height);
@@ -67,7 +76,7 @@ function(e){
     ctx.putImageData(pixelesImagen, 0, 0, 0, 0, width, height);
 })
 
-
+//Se crea el constructor de la clase Element, que utilizaremos como lápiz.
 class Element {
  
     constructor() {
@@ -85,6 +94,9 @@ class Element {
         this.assignEvents();
     }
 
+    //Se asignan los eventos para la funcionalidad de poder dibujar, utilizando el movimiento del mouse
+    //y cuando se esta presionando o no el click.
+    //Además se agregan los eventos para utilizar lapiz, goma o cambiar de color.
     assignEvents() {
         canvas.addEventListener("mousedown", () => this.isDrawing = true);
         canvas.addEventListener("mousemove", event => this.draw(event));
@@ -97,12 +109,15 @@ class Element {
         document.getElementById("color").addEventListener("change", () => this.changeColor())
     }
 
+    //Cambia el color actual de dibujo al seleccionado entre todos los colores disponibles.
     changeColor() {
         console.log(this.colors);
         let selectedColor = document.getElementById("color").value;
         this.color = this.colors[selectedColor];
     }
 
+    //Funcion de dibujado, cuando esta el click presionado se basa en las coordenadas actuales y las ultimas
+    //registradas para generar un trazo utilizando la función stroke() y el color seleccionado.
     draw(event){
         if (this.isDrawing){
             const rect = canvas.getBoundingClientRect();
@@ -123,4 +138,6 @@ class Element {
         }
     }
 }
+
+//Se crea instancia de la clase Element.
 const pencil = new Element();
