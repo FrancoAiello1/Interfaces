@@ -4,6 +4,7 @@ let imageLoader = document.getElementById('imageLoader');
 let download = document.getElementById('download');
 let clear = document.getElementById('clear');
 let blancoynegro = document.getElementById('blancoynegro');
+let negativo = document.getElementById('negativo');
 
 let width = canvas.width;
 let height = canvas.height;
@@ -34,6 +35,19 @@ function(e){
     link.click();
     link.delete;
 });
+
+negativo.addEventListener('click',
+function(e){
+    let pixelesImagen = ctx.getImageData(0,0,width,height);
+    let data = pixelesImagen.data;
+    for (let i=0; i < pixelesImagen.data.length; i+=4){
+        pixelesImagen.data[i] = 255 - pixelesImagen.data[i];
+        pixelesImagen.data[i+1] = 255 - pixelesImagen.data[i+1];
+        pixelesImagen.data[i+2] = 255 - pixelesImagen.data[i+2];
+        pixelesImagen.data[i+3] = 255;
+    }
+    ctx.putImageData(pixelesImagen,0,0)
+})
 
 blancoynegro.addEventListener('click',
 function(e){
