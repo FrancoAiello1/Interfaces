@@ -25,73 +25,86 @@ function cargarImagen(e) {
     }
     reader.readAsDataURL(e.target.files[0]);
 }
- clear.addEventListener('click', function(e){
-     ctx.clearRect(0,0, width, height);
- })
+clear.addEventListener('click', function (e) {
+    ctx.clearRect(0, 0, width, height);
+})
 
 //Se le asigna el evento al botón correspondiente a descargar lienzo y se procede a la descarga del mismo
 //utilizando la funcion toDataURL(), descargando con el nombre especificado "lienzo.png"
 download.addEventListener('click',
-function(e){
-    const link = document.createElement('a');
-    link.download = "lienzo.png";
-    link.href = canvas.toDataURL();
-    link.click();
-    link.delete;
-});
+    function (e) {
+        const link = document.createElement('a');
+        link.download = "lienzo.png";
+        link.href = canvas.toDataURL();
+        link.click();
+        link.delete;
+    });
 
-//Se le asigna el evento al botón correspondiente al filtro negativo y luego se aplica el filtro.
-//Se toma el canvas y a cada pixel se le modifica el valor RGB a el valor opuesto, restándole a 255 el valor
-//actual.
-negativo.addEventListener('click',
-function(e){
-    let pixelesImagen = ctx.getImageData(0,0,width,height);
-    for (let i=0; i < pixelesImagen.data.length; i+=4){
-        pixelesImagen.data[i] = 255 - pixelesImagen.data[i];
-        pixelesImagen.data[i+1] = 255 - pixelesImagen.data[i+1];
-        pixelesImagen.data[i+2] = 255 - pixelesImagen.data[i+2];
-        pixelesImagen.data[i+3] = 255;
+class Filter {
+    constructor() {
+        this.assignEvents();
     }
-    ctx.putImageData(pixelesImagen,0,0)
-})
 
-//Se le asigna el evento al botón correspondiente al filtro de grises y luego se aplica el filtro.
-//Se toma el canvas y a cada pixel se le modifica el valor RGB, obteniendo un promedio de ese valor
-//por cada pixel y haciéndolo el nuevo valor.
-blancoynegro.addEventListener('click',
-function(e){
-    let pixelesImagen = ctx.getImageData(0,0,width,height);
-    for (let y = 0; y < height; y++){
-        for (let x = 0; x < width; x++){
-            let index = (x + y * width) * 4;
-            let r = pixelesImagen.data[index];
-            let g = pixelesImagen.data[index + 1];
-            let b = pixelesImagen.data[index + 2];
-    
-            pixelesImagen.data[index] = (r + g + b) /3;
-            pixelesImagen.data[index+1] = (r + g + b) /3;
-            pixelesImagen.data[index+2] = (r + g + b) /3;
+    assignEvents() {
+        blancoynegro.addEventListener('click', () => this.blancoYNegro());
+        negativo.addEventListener("click", () => this.negativo());
+    }
+
+    blancoYNegro() {
+        //Se le asigna el evento al botón correspondiente al filtro de grises y luego se aplica el filtro.
+        //Se toma el canvas y a cada pixel se le modifica el valor RGB, obteniendo un promedio de ese valor
+        //por cada pixel y haciéndolo el nuevo valor.
+        let imageData = ctx.getImageData(0, 0, width, height);
+        for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+                let index = (x + y * width) * 4;
+                let r = imageData.data[index];
+                let g = imageData.data[index + 1];
+                let b = imageData.data[index + 2];
+
+                let color = (r + g + b) / 3;
+
+                this.setPixel(imageData, x, y, color, color, color, 255);
+            }
         }
+        ctx.putImageData(imageData, 0, 0, 0, 0, width, height);
     }
-    ctx.putImageData(pixelesImagen, 0, 0, 0, 0, width, height);
-})
+
+    negativo() {
+        //Se le asigna el evento al botón correspondiente al filtro negativo y luego se aplica el filtro.
+        //Se toma el canvas y a cada pixel se le modifica el valor RGB a el valor opuesto, restándole a 255 el valor
+        //actual.
+        let imageData = ctx.getImageData(0, 0, width, height);
+        for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+                let index = (x + y * width) * 4;
+                let r = 255 - imageData.data[index];
+                let g = 255 - imageData.data[index + 1];
+                let b = 255 - imageData.data[index + 2];
+                this.setPixel(imageData, x, y, r, g, b, 255);
+            }
+        }
+        ctx.putImageData(imageData, 0, 0)
+
+    }
+
+    setPixel(imageData,x, y, r, g, b, a) {
+        let index = (x + y * width) * 4;
+        imageData.data[index] = r;
+        imageData.data[index + 1] = g;
+        imageData.data[index + 2] = b;
+        imageData.data[index + 3] = a;
+    }
+}
 
 //Se crea el constructor de la clase Element, que utilizaremos como lápiz.
 class Element {
- 
+
     constructor() {
         this.isDrawing = false;
         this.lastCoords = [null, null];
-        this.colors = {
-            "rojo": "#FF0000",
-            "blanco": "#FFFFFF",
-            "azul": "#003AFF",
-            "negro": "#000000",
-            "verde": "#08FF00",
-            "amarillo": "#DCFF00",
-        }
-        this.color = this.colors.negro;
         this.assignEvents();
+        this.changeColor();
     }
 
     //Se asignan los eventos para la funcionalidad de poder dibujar, utilizando el movimiento del mouse
@@ -104,28 +117,27 @@ class Element {
             this.isDrawing = false;
             this.lastCoords = [null, null];
         });
-        document.getElementById("goma").addEventListener("click", () => this.color = this.colors.blanco);
+        document.getElementById("goma").addEventListener("click", () => this.color = "#ffffff");
         document.getElementById("lapiz").addEventListener("click", () => this.changeColor());
         document.getElementById("color").addEventListener("change", () => this.changeColor())
     }
 
     //Cambia el color actual de dibujo al seleccionado entre todos los colores disponibles.
     changeColor() {
-        console.log(this.colors);
-        let selectedColor = document.getElementById("color").value;
-        this.color = this.colors[selectedColor];
+        this.color = document.getElementById("color").value;
     }
 
     //Funcion de dibujado, cuando esta el click presionado se basa en las coordenadas actuales y las ultimas
     //registradas para generar un trazo utilizando la función stroke() y el color seleccionado.
-    draw(event){
-        if (this.isDrawing){
+    draw(event) {
+        if (this.isDrawing) {
             const rect = canvas.getBoundingClientRect();
             this.offsetLeft = rect.left;
             this.offsetTop = rect.top;
             //ctx.fillStyle = this.color;
             //ctx.fillRect(event.clientX - this.offsetLeft, event.clientY - this.offsetTop, 10, 10);
             if (this.lastCoords[0] != null) {
+                ctx.lineCap = "round";
                 ctx.beginPath();
                 ctx.lineWidth = 10;
                 ctx.moveTo(this.lastCoords[0], this.lastCoords[1])
@@ -133,7 +145,7 @@ class Element {
                 ctx.strokeStyle = this.color;
                 ctx.stroke();
             }
-                // linea entre coords actuales y lastCoords
+            // linea entre coords actuales y lastCoords
             this.lastCoords = [event.clientX - this.offsetLeft, event.clientY - this.offsetTop];
         }
     }
@@ -141,3 +153,4 @@ class Element {
 
 //Se crea instancia de la clase Element.
 const pencil = new Element();
+const filter = new Filter();
