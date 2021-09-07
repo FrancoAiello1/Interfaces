@@ -5,6 +5,7 @@ let download = document.getElementById('download');
 let clear = document.getElementById('clear');
 let blancoynegro = document.getElementById('blancoynegro');
 let negativo = document.getElementById('negativo');
+let binarizacion = document.getElementById('binarizacion');
 
 let width = canvas.width;
 let height = canvas.height;
@@ -48,6 +49,7 @@ class Filter {
     assignEvents() {
         blancoynegro.addEventListener('click', () => this.blancoYNegro());
         negativo.addEventListener("click", () => this.negativo());
+        binarizacion.addEventListener("click", () => this.binarizacion());
     }
 
     blancoYNegro() {
@@ -88,7 +90,26 @@ class Filter {
 
     }
 
-    setPixel(imageData,x, y, r, g, b, a) {
+    binarizacion() {
+        //Se le asigna el evento al botón correspondiente al filtro de binarización y luego se aplica el filtro
+        //Se toma el canvas y a cada pixel dependiendo de la suma de los valores RGB, se le asigna el color blanco
+        //o negro, cuando el color se acerca mas al negro que al blanco se le asigna a cada pixel el valor 0
+        //y cuando el color se acerca mas al blanco que al negro se le asigna a cada pixel el valor 255;
+        let imageData = ctx.getImageData(0, 0, width, height);
+        for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+                let index = (x + y * width) * 4;
+                let valor = 255;
+                if ((imageData.data[index] + imageData.data[index + 1] + imageData.data[index + 2]) / 3 < 255 / 3)
+                    valor = 0;
+
+                this.setPixel(imageData, x, y, valor, valor, valor, 255);
+            }
+        }
+        ctx.putImageData(imageData, 0, 0)
+    }
+
+    setPixel(imageData, x, y, r, g, b, a) {
         let index = (x + y * width) * 4;
         imageData.data[index] = r;
         imageData.data[index + 1] = g;
