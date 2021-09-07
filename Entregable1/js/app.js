@@ -5,6 +5,7 @@ let download = document.getElementById('download');
 let clear = document.getElementById('clear');
 let blancoynegro = document.getElementById('blancoynegro');
 let negativo = document.getElementById('negativo');
+let binarizacion = document.getElementById('binarizacion');
 
 let width = canvas.width;
 let height = canvas.height;
@@ -25,60 +26,83 @@ function cargarImagen(e) {
     }
     reader.readAsDataURL(e.target.files[0]);
 }
- clear.addEventListener('click', function(e){
-     ctx.clearRect(0,0, width, height);
- })
+clear.addEventListener('click', function (e) {
+    ctx.clearRect(0, 0, width, height);
+})
 
 //Se le asigna el evento al botón correspondiente a descargar lienzo y se procede a la descarga del mismo
 //utilizando la funcion toDataURL(), descargando con el nombre especificado "lienzo.png"
 download.addEventListener('click',
-function(e){
-    const link = document.createElement('a');
-    link.download = "lienzo.png";
-    link.href = canvas.toDataURL();
-    link.click();
-    link.delete;
-});
+    function (e) {
+        const link = document.createElement('a');
+        link.download = "lienzo.png";
+        link.href = canvas.toDataURL();
+        link.click();
+        link.delete;
+    });
 
 //Se le asigna el evento al botón correspondiente al filtro negativo y luego se aplica el filtro.
 //Se toma el canvas y a cada pixel se le modifica el valor RGB a el valor opuesto, restándole a 255 el valor
 //actual.
 negativo.addEventListener('click',
-function(e){
-    let pixelesImagen = ctx.getImageData(0,0,width,height);
-    for (let i=0; i < pixelesImagen.data.length; i+=4){
-        pixelesImagen.data[i] = 255 - pixelesImagen.data[i];
-        pixelesImagen.data[i+1] = 255 - pixelesImagen.data[i+1];
-        pixelesImagen.data[i+2] = 255 - pixelesImagen.data[i+2];
-        pixelesImagen.data[i+3] = 255;
-    }
-    ctx.putImageData(pixelesImagen,0,0)
-})
+    function (e) {
+        let pixelesImagen = ctx.getImageData(0, 0, width, height);
+        for (let i = 0; i < pixelesImagen.data.length; i += 4) {
+            pixelesImagen.data[i] = 255 - pixelesImagen.data[i];
+            pixelesImagen.data[i + 1] = 255 - pixelesImagen.data[i + 1];
+            pixelesImagen.data[i + 2] = 255 - pixelesImagen.data[i + 2];
+            pixelesImagen.data[i + 3] = 255;
+        }
+        ctx.putImageData(pixelesImagen, 0, 0)
+    })
 
 //Se le asigna el evento al botón correspondiente al filtro de grises y luego se aplica el filtro.
 //Se toma el canvas y a cada pixel se le modifica el valor RGB, obteniendo un promedio de ese valor
 //por cada pixel y haciéndolo el nuevo valor.
 blancoynegro.addEventListener('click',
-function(e){
-    let pixelesImagen = ctx.getImageData(0,0,width,height);
-    for (let y = 0; y < height; y++){
-        for (let x = 0; x < width; x++){
-            let index = (x + y * width) * 4;
-            let r = pixelesImagen.data[index];
-            let g = pixelesImagen.data[index + 1];
-            let b = pixelesImagen.data[index + 2];
-    
-            pixelesImagen.data[index] = (r + g + b) /3;
-            pixelesImagen.data[index+1] = (r + g + b) /3;
-            pixelesImagen.data[index+2] = (r + g + b) /3;
+    function (e) {
+        let pixelesImagen = ctx.getImageData(0, 0, width, height);
+        for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+                let index = (x + y * width) * 4;
+                let r = pixelesImagen.data[index];
+                let g = pixelesImagen.data[index + 1];
+                let b = pixelesImagen.data[index + 2];
+
+                pixelesImagen.data[index] = (r + g + b) / 3;
+                pixelesImagen.data[index + 1] = (r + g + b) / 3;
+                pixelesImagen.data[index + 2] = (r + g + b) / 3;
+            }
         }
-    }
-    ctx.putImageData(pixelesImagen, 0, 0, 0, 0, width, height);
-})
+        ctx.putImageData(pixelesImagen, 0, 0, 0, 0, width, height);
+    })
+
+
+//Se le asigna el evento al botón correspondiente al filtro de binarización y luego se aplica el filtro
+//Se toma el canvas y a cada pixel dependiendo de la suma de los valores RGB, se le asigna el color blanco
+//o negro, cuando el color se acerca mas al negro que al blanco se le asigna a cada pixel el valor 0
+//y cuando el color se acerca mas al blanco que al negro se le asigna a cada pixel el valor 255;
+binarizacion.addEventListener('click',
+    function (e) {
+        let pixelesImagen = ctx.getImageData(0, 0, width, height);
+        let valor;
+        for (let i = 0; i < pixelesImagen.data.length; i += 4) {
+            if ((pixelesImagen.data[i] + pixelesImagen.data[i + 1] + pixelesImagen.data[i + 2])/3 < 255 / 3) {
+                valor = 0;
+            } else {
+                valor = 255;
+            }
+            pixelesImagen.data[i] = valor;
+            pixelesImagen.data[i + 1] = valor;
+            pixelesImagen.data[i + 2] = valor;
+            
+        }
+        ctx.putImageData(pixelesImagen, 0, 0)
+    })
 
 //Se crea el constructor de la clase Element, que utilizaremos como lápiz.
 class Element {
- 
+
     constructor() {
         this.isDrawing = false;
         this.lastCoords = [null, null];
@@ -118,8 +142,8 @@ class Element {
 
     //Funcion de dibujado, cuando esta el click presionado se basa en las coordenadas actuales y las ultimas
     //registradas para generar un trazo utilizando la función stroke() y el color seleccionado.
-    draw(event){
-        if (this.isDrawing){
+    draw(event) {
+        if (this.isDrawing) {
             const rect = canvas.getBoundingClientRect();
             this.offsetLeft = rect.left;
             this.offsetTop = rect.top;
@@ -133,7 +157,7 @@ class Element {
                 ctx.strokeStyle = this.color;
                 ctx.stroke();
             }
-                // linea entre coords actuales y lastCoords
+            // linea entre coords actuales y lastCoords
             this.lastCoords = [event.clientX - this.offsetLeft, event.clientY - this.offsetTop];
         }
     }
