@@ -6,6 +6,7 @@ let clear = document.getElementById('clear');
 let blancoynegro = document.getElementById('blancoynegro');
 let negativo = document.getElementById('negativo');
 let binarizacion = document.getElementById('binarizacion');
+let sepia = document.getElementById('sepia');
 
 let width = canvas.width;
 let height = canvas.height;
@@ -47,13 +48,14 @@ class Filter {
     }
 
     assignEvents() {
+        //Se le asigna el evento 'click' al botón correspondiente a cada filtro que acciona su respectiva funcion.
         blancoynegro.addEventListener('click', () => this.blancoYNegro());
         negativo.addEventListener("click", () => this.negativo());
         binarizacion.addEventListener("click", () => this.binarizacion());
+        sepia.addEventListener("click", () => this.sepia());
     }
 
     blancoYNegro() {
-        //Se le asigna el evento al botón correspondiente al filtro de grises y luego se aplica el filtro.
         //Se toma el canvas y a cada pixel se le modifica el valor RGB, obteniendo un promedio de ese valor
         //por cada pixel y haciéndolo el nuevo valor.
         let imageData = ctx.getImageData(0, 0, width, height);
@@ -73,7 +75,6 @@ class Filter {
     }
 
     negativo() {
-        //Se le asigna el evento al botón correspondiente al filtro negativo y luego se aplica el filtro.
         //Se toma el canvas y a cada pixel se le modifica el valor RGB a el valor opuesto, restándole a 255 el valor
         //actual.
         let imageData = ctx.getImageData(0, 0, width, height);
@@ -91,7 +92,6 @@ class Filter {
     }
 
     binarizacion() {
-        //Se le asigna el evento al botón correspondiente al filtro de binarización y luego se aplica el filtro
         //Se toma el canvas y a cada pixel dependiendo de la suma de los valores RGB, se le asigna el color blanco
         //o negro, cuando el color se acerca mas al negro que al blanco se le asigna a cada pixel el valor 0
         //y cuando el color se acerca mas al blanco que al negro se le asigna a cada pixel el valor 255;
@@ -109,6 +109,45 @@ class Filter {
         ctx.putImageData(imageData, 0, 0)
     }
 
+    sepia() {
+        //Se toma el canvas y a cada pixel se le modifica el valor RGB con el algoritmo de filtro sepia, luego se
+        //asigna ese nuevo valor a cada color del pixel.
+        console.log('click');
+        let imageData = ctx.getImageData(0, 0, width, height);
+        for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+                let index = (x + y * width) * 4;
+                let r = imageData.data[index];
+                let g = imageData.data[index + 1];
+                let b = imageData.data[index + 2];
+                let a = imageData.data[index + 3];
+
+                let newRed = (0.393 * r + 0.769 * g + 0.189 * b);
+                let newGreen = (0.349 * r + 0.686 * g + 0.168 * b);
+                let newBlue = (0.272 * r + 0.534 * g + 0.131 * b);
+
+                if (newRed > 255) {
+                    r = 255;
+                } else {
+                    r = newRed;
+                }
+                if (newGreen > 255) {
+                    g = 255;
+                } else {
+                    g = newGreen;
+                }
+                if (newBlue > 255) {
+                    b = 255;
+                } else {
+                    b = newBlue;
+                }
+                this.setPixel(imageData, x, y, r, g, b, a);
+            }
+        }
+        ctx.putImageData(imageData, 0, 0, 0, 0, width, height);
+
+    }
+
     setPixel(imageData, x, y, r, g, b, a) {
         let index = (x + y * width) * 4;
         imageData.data[index] = r;
@@ -117,6 +156,8 @@ class Filter {
         imageData.data[index + 3] = a;
     }
 }
+
+
 
 //Se crea el constructor de la clase Element, que utilizaremos como lápiz.
 class Element {
@@ -143,7 +184,7 @@ class Element {
         document.getElementById("color").addEventListener("change", () => this.changeColor())
     }
 
-    //Cambia el color actual de dibujo al seleccionado entre todos los colores disponibles.
+    //Cambia el color actual de dibujo al seleccionado.
     changeColor() {
         this.color = document.getElementById("color").value;
     }
@@ -172,6 +213,6 @@ class Element {
     }
 }
 
-//Se crea instancia de la clase Element.
+//Se crea instancia de la clase Element y Filter.
 const pencil = new Element();
 const filter = new Filter();
