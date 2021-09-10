@@ -7,6 +7,7 @@ let blancoynegro = document.getElementById('blancoynegro');
 let negativo = document.getElementById('negativo');
 let binarizacion = document.getElementById('binarizacion');
 let sepia = document.getElementById('sepia');
+let brillo = document.getElementById('brillo');
 
 let width = canvas.width;
 let height = canvas.height;
@@ -21,6 +22,16 @@ function cargarImagen(e) {
     reader.onload = function (event) {
         let img = new Image();
         img.onload = function () {
+            if (img.width > window.screen.width || img.height > window.screen.height) {
+                alert("No se acepta el tamaño de la imagen.");
+                return;
+            }
+            else{
+                canvas.width = img.width;
+                canvas.height = img.height;
+            }
+            width = canvas.width;
+            height = canvas.height;
             ctx.drawImage(img, 0, 0);
         }
         img.src = event.target.result;
@@ -44,6 +55,7 @@ download.addEventListener('click',
 
 class Filter {
     constructor() {
+        this.ultimoBrillo = parseInt(document.getElementById("brillo").value);
         this.assignEvents();
     }
 
@@ -53,6 +65,7 @@ class Filter {
         negativo.addEventListener("click", () => this.negativo());
         binarizacion.addEventListener("click", () => this.binarizacion());
         sepia.addEventListener("click", () => this.sepia());
+        brillo.addEventListener("change", () => this.brillo());
     }
 
     blancoYNegro() {
@@ -146,6 +159,27 @@ class Filter {
         }
         ctx.putImageData(imageData, 0, 0, 0, 0, width, height);
 
+    }
+
+    brillo() {
+        let imageData = ctx.getImageData(0, 0, width, height);
+        let brillo = parseInt(document.getElementById('brillo').value);
+        let brilloActual = this.ultimoBrillo;
+        this.ultimoBrillo = brillo;
+        if (brillo < brilloActual)
+            brillo = (brilloActual - brillo) * -1;
+        else
+            brillo = brillo - brilloActual;
+        for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+                let index = (x + y * width) * 4;
+                let r = imageData.data[index] + brillo;
+                let g = imageData.data[index + 1] + brillo;
+                let b = imageData.data[index + 2] + brillo;
+                this.setPixel(imageData, x, y, r, g, b, 255);
+            }
+        }
+        ctx.putImageData(imageData, 0, 0);
     }
 
     setPixel(imageData, x, y, r, g, b, a) {
