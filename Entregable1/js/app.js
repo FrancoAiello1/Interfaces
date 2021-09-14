@@ -185,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
         saturacion() {
             //Se toma el canvas y a cada pixel se le modifica el valor RGB, buscando el color predominante en cada
             //pixel y aumentándolo en mayor medida que los otros con la diferencia entre el predominante y
-            // el valor mas bajo (delta).
+            // el valor mas bajo (delta) y restandole el mismo valor delta al valor mas chico.
             let imageData = ctx.getImageData(0, 0, width, height);
             for (let y = 0; y < height; y++) {
                 for (let x = 0; x < width; x++) {
@@ -204,6 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         g += delta;
                     else if (b == maxColor)
                         b += delta;
+                        
                     if (r == minColor)
                         r -= delta;
                     else if (g == minColor)
