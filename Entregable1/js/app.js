@@ -5,11 +5,13 @@ document.addEventListener("DOMContentLoaded", () => {
     let width = canvas.width;
     let height = canvas.height;
 
-    document.getElementById('imageLoader').addEventListener('change', cargarImagen, false);
+    document.getElementById('imageLoader').addEventListener('change', cargarImagen);
+    document.getElementById("restaurar").addEventListener("click", cargarImagen);
 
     //Se inicia una instancia de FileReader y al cargar una imagen este la dibuja en el lienzo, respetando
     //el tamaño del mismo y no rompiendo el aspecto.
-    function cargarImagen(e) {
+    //Además está asociado al boton de restaurar imagen.
+    function cargarImagen() {
         let reader = new FileReader();
         reader.onload = function (event) {
             let img = new Image();
@@ -28,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             img.src = event.target.result;
         }
-        reader.readAsDataURL(e.target.files[0]);
+        reader.readAsDataURL(document.getElementById("imageLoader").files[0]);
     }
     document.getElementById('clear').addEventListener('click', function (e) {
         ctx.clearRect(0, 0, width, height);
@@ -59,6 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById('sepia').addEventListener("click", () => this.sepia());
             document.getElementById('brillo').addEventListener("change", () => this.brillo());
             document.getElementById("saturacion").addEventListener("click", () => this.saturacion());
+            document.getElementById("blur").addEventListener("click", () => this.blur());
         }
 
         blancoYNegro() {
@@ -155,6 +158,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         brillo() {
+            //Se toma el canvas y a cada pixel se incrementa en lo que el usuario desee el valor RGB
+            //en la misma cantidad, llevandolos a valores más altos
+            //Se controló que la imagen se pueda volver a su estado original y que cada vez que se toca el brillo
+            //No se aplique en los mismos valores, por lo tanto no llegariamos a una imagen negra o una blanca
             let imageData = ctx.getImageData(0, 0, width, height);
             let brillo = parseInt(document.getElementById('brillo').value);
             let brilloActual = this.ultimoBrillo;
@@ -177,7 +184,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         saturacion() {
             //Se toma el canvas y a cada pixel se le modifica el valor RGB, buscando el color predominante en cada
-            //pixel y aumentándolo en mayor medida que los otros.
+            //pixel y aumentándolo en mayor medida que los otros con la diferencia entre el predominante y
+            // el valor mas bajo (delta).
             let imageData = ctx.getImageData(0, 0, width, height);
             for (let y = 0; y < height; y++) {
                 for (let x = 0; x < width; x++) {
@@ -190,28 +198,45 @@ document.addEventListener("DOMContentLoaded", () => {
                     let minColor = Math.min(r, g, b);
                     let delta = maxColor - minColor;
 
-                    if (r == maxColor) {
+                    if (r == maxColor)
                         r += delta;
-                    }
                     else if (g == maxColor)
                         g += delta;
                     else if (b == maxColor)
                         b += delta;
-
-                    if (r == minColor) {
+                    if (r == minColor)
                         r -= delta;
-                    }
                     else if (g == minColor)
                         g -= delta;
                     else if (b == minColor)
                         b -= delta;
 
+                    this.setPixel(imageData, x, y, r, g, b, 255);
+                }
+            }
+            ctx.putImageData(imageData, 0, 0, 0, 0, width, height);
+        }
 
+        blur() {
+            //Por cada pixel metemos los valores R, G y B en un arreglo y los filtramos de ser null,
+            //luego hacemos la suma de esos valores y la dividimos por el largo del arreglo,
+            //obteniendo así el promedio de los valores de el color de cada pixel.
+            let imageData = ctx.getImageData(0, 0, width, height);
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+
+                    let reds = [this.getRed(imageData, x - 1, y + 1), this.getRed(imageData, x - 1, y + 1), this.getRed(imageData, x, y + 1), this.getRed(imageData, x + 1, y + 1), this.getRed(imageData, x - 1, y), this.getRed(imageData, x, y), this.getRed(imageData, x + 1, y), this.getRed(imageData, x - 1, y - 1), this.getRed(imageData, x, y - 1), this.getRed(imageData, x + 1, y - 1)].filter(red => red != null);
+                    let greens = [this.getGreen(imageData, x - 1, y + 1), this.getGreen(imageData, x - 1, y + 1), this.getGreen(imageData, x, y + 1), this.getGreen(imageData, x + 1, y + 1), this.getGreen(imageData, x - 1, y), this.getGreen(imageData, x, y), this.getGreen(imageData, x + 1, y), this.getGreen(imageData, x - 1, y - 1), this.getGreen(imageData, x, y - 1), this.getGreen(imageData, x + 1, y - 1)].filter(green => green != null)
+                    let blues = [this.getBlue(imageData, x - 1, y + 1), this.getBlue(imageData, x - 1, y + 1), this.getBlue(imageData, x, y + 1), this.getBlue(imageData, x + 1, y + 1), this.getBlue(imageData, x - 1, y), this.getBlue(imageData, x, y), this.getBlue(imageData, x + 1, y), this.getBlue(imageData, x - 1, y - 1), this.getBlue(imageData, x, y - 1), this.getBlue(imageData, x + 1, y - 1)].filter(blue => blue != null)
+                    let r = reds.reduce((sum, red) => sum += red) / reds.length;
+                    let g = greens.reduce((sum, green) => sum += green) / greens.length;
+                    let b = blues.reduce((sum, blue) => sum += blue) / blues.length;
 
                     this.setPixel(imageData, x, y, r, g, b, 255);
                 }
             }
             ctx.putImageData(imageData, 0, 0, 0, 0, width, height);
+
         }
 
         setPixel(imageData, x, y, r, g, b, a) {
@@ -220,6 +245,21 @@ document.addEventListener("DOMContentLoaded", () => {
             imageData.data[index + 1] = g;
             imageData.data[index + 2] = b;
             imageData.data[index + 3] = a;
+        }
+
+        getRed(imageData, x, y) {
+            let index = (x + y * width) * 4;
+            return imageData.data[index]
+        }
+
+        getGreen(imageData, x, y) {
+            let index = (x + y * width) * 4;
+            return imageData.data[index + 1];
+        }
+
+        getBlue(imageData, x, y) {
+            let index = (x + y * width) * 4;
+            return imageData.data[index + 2];
         }
     }
 
@@ -256,7 +296,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         //Funcion de dibujado, cuando esta el click presionado se basa en las coordenadas actuales y las ultimas
-        //registradas para generar un trazo utilizando la función stroke() y el color seleccionado.
+        //registradas para generar un trazo utilizando la función stroke() y el color y grosor seleccionado.
         draw(event) {
             if (this.isDrawing) {
                 const rect = canvas.getBoundingClientRect();
@@ -265,9 +305,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 //ctx.fillStyle = this.color;
                 //ctx.fillRect(event.clientX - this.offsetLeft, event.clientY - this.offsetTop, 10, 10);
                 if (this.lastCoords[0] != null) {
+                    let grosor = parseInt(document.getElementById('grosor').value);
                     ctx.lineCap = "round";
                     ctx.beginPath();
-                    ctx.lineWidth = 10;
+                    ctx.lineWidth = grosor;
                     ctx.moveTo(this.lastCoords[0], this.lastCoords[1])
                     ctx.lineTo(event.clientX - this.offsetLeft, event.clientY - this.offsetTop);
                     ctx.strokeStyle = this.color;
