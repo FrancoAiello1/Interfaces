@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
         location.reload();
       });
 
+    
     class Board {
         constructor(width, height) {
             this.width = width;

@@ -1,6 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+<script>
+     function allowDrop(ev) {
+        ev.preventDefault();
+      }
+      
+      function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
+      }
+      
+      function drop(ev) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("text");
+        ev.target.appendChild(document.getElementById(data));
+      }
 
+</script>
 <head>
     <link rel="stylesheet" href="css/style.css">
     <meta charset="UTF-8">
@@ -13,13 +28,14 @@
 
 <body>
     <div id="juego">
-        <div id="lista">
-            <ul id="list">
-            </ul>
-        </div>
-            <canvas id="canvas" width="350" height="300px" style="border: 1px solid black;"></canvas>
+        <ul id="list">
+        </ul>
+
+        <canvas id="canvas" width="350" height="300px" style="border: 1px solid black;"></canvas>
         <button id="reset">Reset</button>
     </div>
+    <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <img src="img/ficha-roja.png" id="drag1" draggable="true" ondragstart="drag(event)">
 </body>
 
 </html>
