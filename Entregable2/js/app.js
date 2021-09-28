@@ -6,6 +6,10 @@ document.addEventListener("DOMContentLoaded", () => {
     let filas = 6;
     let columnas = 7;
 
+    document.getElementById('reset').addEventListener('click',function () {
+        location.reload();
+      });
+
     class Board {
         constructor(width, height) {
             this.width = width;
@@ -14,6 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
             this.pintarHeader();
             this.currentPlayer = 1;
         }
+
+
 
         pintarHeader() {
             for (let i = 0; i < this.width; i++) {
