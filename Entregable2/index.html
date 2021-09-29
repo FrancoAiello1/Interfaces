@@ -13,6 +13,15 @@
         ev.preventDefault();
         var data = ev.dataTransfer.getData("text");
         ev.target.appendChild(document.getElementById(data));
+        restack(ev);
+        
+      }
+      function restack(ev){
+        console.log("enter");
+        var img = document.createElement("img");
+        img.src = "img/ficha-azul.png";
+        img.id = "drag1";
+        document.body.appendChild(img); 
       }
 
 </script>
@@ -21,7 +30,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trabajo práctico entregable N°2</title>
+    <title>TP Entregable N°2</title>
     <script src="js/app.js"></script>
 
 </head>
@@ -35,7 +44,8 @@
         <button id="reset">Reset</button>
     </div>
     <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-    <img src="img/ficha-roja.png" id="drag1" draggable="true" ondragstart="drag(event)">
+    <div id="div2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <img src="img/ficha-roja.png" id="drag1"  ondragstart="drag(event)">
 </body>
 
 </html>
