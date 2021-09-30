@@ -1,51 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <script>
-     function allowDrop(ev) {
-        ev.preventDefault();
-      }
-      
-      function drag(ev) {
-        ev.dataTransfer.setData("text", ev.target.id);
-      }
-      
-      function drop(ev) {
-        ev.preventDefault();
-        var data = ev.dataTransfer.getData("text");
-        ev.target.appendChild(document.getElementById(data));
-        restack(ev);
-        
-      }
-      function restack(ev){
-        console.log("enter");
-        var img = document.createElement("img");
-        img.src = "img/ficha-azul.png";
-        img.id = "drag1";
-        document.body.appendChild(img); 
-      }
+
+  this.currentPlayer = 1;
+  function allowDrop(ev) {
+    ev.preventDefault();
+  }
+
+  function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+  }
+
+  function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
+    restack(ev);
+
+  }
+  function restack(ev) {
+    console.log("enter");
+    var img = document.createElement("img");
+    img.src = this.currentPlayer == 1 ? "img/ficha-roja.png" : "img/ficha-azul.png";
+    this.currentPlayer = this.currentPlayer == 1 ? 2 : 1;
+    img.id = "drag1";
+    img.ondragstart=drag(event);
+    document.body.appendChild(img);
+  }
 
 </script>
+
 <head>
-    <link rel="stylesheet" href="css/style.css">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TP Entregable N°2</title>
-    <script src="js/app.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TP Entregable N°2</title>
+  <script src="js/app.js"></script>
 
 </head>
 
 <body>
-    <div id="juego">
-        <ul id="list">
-        </ul>
+  <div id="juego">
+    <ul id="list">
+    </ul>
 
-        <canvas id="canvas" width="350" height="300px" style="border: 1px solid black;"></canvas>
-        <button id="reset">Reset</button>
-    </div>
-    <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-    <div id="div2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-    <img src="img/ficha-roja.png" id="drag1"  ondragstart="drag(event)">
+    <canvas id="canvas" width="350" height="300px" style="border: 1px solid black;"></canvas>
+    <button id="reset">Reset</button>
+  </div>
+  <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+  <div id="div2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+  <img src="img/ficha-roja.png" id="drag1" ondragstart="drag(event)">
+  <img src="img/ficha-azul.png" id="drag2" ondragstart="drag(event)">
 </body>
 
 </html>
