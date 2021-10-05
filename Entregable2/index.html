@@ -13,14 +13,16 @@
 
 <body>
   <div id="juego">
+    <img src="img/ficha-roja.png" id="drag1" >
+    <img src="img/ficha-azul.png" id="drag2" style="display: none;" >
     <ul id="list">
     </ul>
 
-    <canvas id="canvas" width="350" height="300px" style="border: 1px solid black;"></canvas>
+    <canvas id="canvas" width="10px" height="10px" style="border: 1px solid black;"></canvas>
     <button id="reset">Reset</button>
+    <label for="enLinea">Cantidad en linea</label>
+    <input type="number" id="enLinea" name="enLinea" min="2" value="4">
   </div>
-  <img src="img/ficha-roja.png" id="drag1" >
-  <img src="img/ficha-azul.png" id="drag2" style="display: none;" >
 </body>
 
 </html>

@@ -2,8 +2,14 @@ document.addEventListener("DOMContentLoaded", () => {
     "use strict";
     let canvas = document.getElementById("canvas");
     let ctx = canvas.getContext("2d");
-    let filas = 6;
-    let columnas = 7;
+
+    let enLinea = 4;
+    let filas = enLinea + 2;
+    let columnas = enLinea + 3;
+    let width = columnas * 50;
+    let height = filas * 50;
+    canvas.width = width;
+    canvas.height = height;
 
     document.getElementById('reset').addEventListener('click', function () {
         location.reload();
@@ -32,11 +38,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 li.addEventListener("drop", (e) => {
                     this.ponerFicha(i);
                 })
-                li.style.padding = "20px";
+                li.style.padding = "18px";
                 li.style.cursor = "pointer";
                 li.style.border = "1px solid black";
                 li.style.borderRadius = "5px"
                 li.style.marginLeft = "1px";
+                li.style.maxWidth = "50px"
                 document.getElementById("list").appendChild(li);
             }
         }
@@ -61,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (lastIndexOf0 != -1) {
                 this.board[columna][lastIndexOf0] = this.currentPlayer;
                 this.getGanador(columna, lastIndexOf0);
-                
+
                 let img = new Image();
                 img.onload = function () {
                     ctx.drawImage(img, columna * 50, lastIndexOf0 * 50);
@@ -76,50 +83,114 @@ document.addEventListener("DOMContentLoaded", () => {
                     document.getElementById("drag2").style.display = "none";
                     document.getElementById("drag1").style.display = "block";
                 }
-                
+
             }
             else
                 alert("Ya no se pueden insertar mas fichas en esta columna.");
         }
 
         getGanador(columna, fila) {
+            this.verificarHorizontalmente(columna, fila);
+            this.verificarVerticalmente(columna, fila);
+            this.verificarDiagonalmente(columna, fila)
+        }
 
+        verificarHorizontalmente(columna, fila) {
             //Busca 4 en linea horizontalmente.
             let cantidadFichas = 1;
             let xNegativo = columna - 1;
-            for (let x = columna + 1; x <= this.height; x++) { 
-                if (this.board[x][fila] == this.currentPlayer) {
-                    cantidadFichas++;
+            let noEncontro = false;
+            for (let x = columna + 1; x <= this.height + 1; x++) {
+                if (!(x > this.height)) {
+                    if (this.board[x][fila] == this.currentPlayer) {
+                        cantidadFichas++;
+                    }
+                    else {
+                        noEncontro = true;
+                    }
                 }
-                while (xNegativo >= 0 && this.board[xNegativo][fila] == this.currentPlayer) { 
-                    cantidadFichas++;                                                     
+                while (xNegativo >= 0 && this.board[xNegativo][fila] == this.currentPlayer) {
+                    cantidadFichas++;
                     xNegativo--;
                 }
+                if (noEncontro) {
+                    break;
+                }
             }
-            if (cantidadFichas >= 4) {
+            if (cantidadFichas >= enLinea) {
                 alert("Gano el jugador " + this.currentPlayer + ' B)');
-                this.pintarTablero();
-                this.currentPlayer = 1;
-                return;
+                location.reload();
             }
-            
+
+        }
+
+        verificarVerticalmente(columna, fila) {
             //Busca 4 en linea verticalmente.
-            cantidadFichas = 1;
-            for (let y = fila + 1; y < this.width; y++) { 
+            let cantidadFichas = 1;
+            for (let y = fila + 1; y < this.width; y++) {
                 if (this.board[columna][y] == this.currentPlayer) {
                     cantidadFichas++;
                 }
-                else
-                break;
+                else {
+                    break;
+                }
             }
-            if (cantidadFichas >= 4) {
-                console.log(cantidadFichas);
-                return;
+            if (cantidadFichas >= enLinea) {
+                alert("Gano el jugador " + this.currentPlayer + ' B)');
+                location.reload();
+            }
+        }
+
+        verificarDiagonalmente(columna, fila) {
+            //Busca 4 en linea en diagonal
+            let cantidadFichas = 1;
+            let filaActual = fila - 1;
+            let xNegativo = columna - 1;
+            let filaNegativo = fila + 1;
+            let noEncontro = false;
+            for (let x = columna + 1; x <= this.height + 1; x++) {
+                if (!(x > this.height)) {
+                    if (this.board[x][filaActual] == this.currentPlayer) {
+                        filaActual--;
+                        cantidadFichas++;
+                    }
+                    else {
+                        noEncontro = true;
+                    }
+                }
+                while (xNegativo >= 0 && this.board[xNegativo][filaNegativo] == this.currentPlayer) {
+                    cantidadFichas++;
+                    xNegativo--;
+                    filaNegativo++;
+                }
+                if (noEncontro) {
+                    break;
+                }
+            }
+            if (cantidadFichas >= enLinea) {
+                alert("Gano el jugador " + this.currentPlayer + ' B)');
+                //location.reload();
             }
         }
     }
 
-    const tablero = new Board(columnas, filas);
+    let tablero = new Board(columnas, filas);
     tablero.pintarTablero();
+
+    document.getElementById('enLinea').addEventListener('change', () => {
+        enLinea = parseInt(document.getElementById('enLinea').value);
+        if (enLinea > 1) {
+            document.getElementById("list").innerHTML = "";
+            filas = enLinea + 2;
+            columnas = enLinea + 3;
+            width = columnas  * 50;
+            height = filas * 50;
+            canvas.width = width;
+            canvas.height = height;
+            tablero = new Board(columnas, filas);
+            tablero.pintarTablero();
+        }
+    });
+
 });
 
