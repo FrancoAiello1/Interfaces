@@ -12,17 +12,54 @@
 </head>
 
 <body>
-  <div id="juego">
-    <img src="img/ficha-roja.png" id="drag1" >
-    <img src="img/ficha-azul.png" id="drag2" style="display: none;" >
-    <ul id="list">
-    </ul>
+  <header>
+    <h1>X en linea</h1>
+  </header>
 
-    <canvas id="canvas" width="10px" height="10px" style="border: 1px solid black;"></canvas>
-    <button id="reset">Reset</button>
-    <label for="enLinea">Cantidad en linea</label>
-    <input type="number" id="enLinea" name="enLinea" min="2" value="4">
+
+  <div class="juego">
+    <p id="segundos"></p>
+
+
+    <div id="fichas-1" style="max-width: 200px;">
+      <div id="elegir-fichas-1">
+
+        <label for="fotoj1">Ingrese su imagen para usar de ficha</label>
+        <input type="file" name="fotoj1" id="fotoj1" class="j1">
+
+        <label for="det1"> o </label>
+        <button id="detj1" name="det1">Usar ficha predeterminada</button>
+      </div>
+    </div>
+
+    <div>
+      <p id="ganador"></p>
+      <div id="cantidad">
+        <label for="enLinea">Cantidad en linea</label>
+        <input type="number" id="enLinea" name="enLinea" min="2" value="4">
+      </div>
+
+
+
+      <ul id="list">
+      </ul>
+      <canvas id="canvas" style="border: 1px solid black;"></canvas>
+      <button id="reset">Reset</button>
+    </div>
+
+    <div id="fichas-2" style="max-width: 200px;">
+      <div id="elegir-fichas-2">
+        <label for="fotoj2">Ingrese su imagen para usar de ficha</label>
+        <input type="file" name="fotoj2" id="fotoj2" class="j2">
+        <label for="det2"> o </label>
+        <button id="detj2" name="det2">Usar ficha predeterminada</button>
+      </div>
+    </div>
+
   </div>
+  <footer>
+    <p> Trabajo práctico entregable N° 2. Aiello, Franco || Moauro, Manuel</p>
+  </footer>
 </body>
 
 </html>

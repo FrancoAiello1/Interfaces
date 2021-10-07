@@ -46,3 +46,35 @@ ul{
     padding: 10px;
     border: 1px solid #aaaaaa;
   }
+
+  footer{
+    display: flex;
+    justify-content: center;
+  }
+
+
+  header {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    background: rgb(128, 128, 128);
+    color: white;
+    font-size:15px;
+  }
+
+  body{
+      background-color: rgba(128, 128, 128, 0.815);
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+  }
+
+  .juego{
+      padding-top: 15px;
+      display: flex;
+      justify-content: space-evenly;
+  }
+
+
+
+
