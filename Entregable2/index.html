@@ -3,6 +3,7 @@
 
 <head>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,21 +14,23 @@
 
 <body>
   <header>
-    <h1>X en linea</h1>
+    <h1 id="title">X en linea</h1>
+    <label for="segundos" id="labelsecs"></label>
+    <p id="segundos" name="segundos"></p>
   </header>
 
 
   <div class="juego">
-    <p id="segundos"></p>
+
 
 
     <div id="fichas-1" style="max-width: 200px;">
       <div id="elegir-fichas-1">
 
-        <label for="fotoj1">Ingrese su imagen para usar de ficha</label>
-        <input type="file" name="fotoj1" id="fotoj1" class="j1">
-
-        <label for="det1"> o </label>
+        <h4>Jugador 1: Elija su ficha</h4>
+        <input type="file" name="fotoj1" id="fotoj1" class="j1" style="visibility: hidden;">
+        <label for="fotoj1" class="fa fa-upload">Subir imagen</label>
+        <p></p>
         <button id="detj1" name="det1">Usar ficha predeterminada</button>
       </div>
     </div>
@@ -49,9 +52,10 @@
 
     <div id="fichas-2" style="max-width: 200px;">
       <div id="elegir-fichas-2">
-        <label for="fotoj2">Ingrese su imagen para usar de ficha</label>
-        <input type="file" name="fotoj2" id="fotoj2" class="j2">
-        <label for="det2"> o </label>
+        <h4>Jugador 2: Elija su ficha</h4>
+        <input type="file" name="fotoj2" id="fotoj2" class="j2" style="visibility: hidden;">
+        <label for="fotoj2" class="fa fa-upload">Subir imagen</label>
+        <p></p>
         <button id="detj2" name="det2">Usar ficha predeterminada</button>
       </div>
     </div>

@@ -2,6 +2,12 @@ document.addEventListener("DOMContentLoaded", () => {
     "use strict";
     let canvas = document.getElementById("canvas");
     let ctx = canvas.getContext("2d");
+    
+    var img = new Image();
+    img.onload = function() {
+      ctx.drawImage(img, 0, 0);
+    };
+    img.src = 'img/start.png';
 
     let enLinea = 4;
     let filas = enLinea + 2;
@@ -20,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     class Juego {
+        //Clase princiapal, construye la logica del juego y tambien la visualizacion del tablero
         constructor(width, height) {
             this.width = width;
             this.height = height;
@@ -30,6 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         pintarHeader() {
+            //Crea un espacio correspondiente a cada columna donde el jugador va a poner la ficha
+            //Dicho espacio es representado por una imagen de una flecha.
             if (document.getElementById("cantidad")) {
                 document.getElementById("cantidad").remove();
             }
@@ -54,6 +63,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         pintarTablero() {
+            //A cada espacio de la matriz le asigna la imagen correspondiente al tablero vacío para
+            //así armarlo.
+            //Controla el tiempo de juego y muestra de que jugador es el turno.
             for (let x = 0; x < this.width; x++) {
                 this.board.push([]);
                 for (let y = 0; y < this.height; y++) {
@@ -68,16 +80,26 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             let segundos = 60;
             setInterval(() => {
-                document.getElementById("segundos").innerHTML = segundos;
+                document.getElementById("labelsecs").innerHTML = "Turno del jugador " + this.currentPlayer;
+                document.getElementById("segundos").innerHTML = segundos + "s";
                 segundos--;
             }, 1000);
             setTimeout(() => {
-                this.restart();
+                //this.restart();
+                
+                document.getElementById("labelsecs").innerHTML ="Limite de tiempo alcanzado, reiniciando juego.";
+                
+                setInterval(() => {
+                    document.getElementById("labelsecs").innerHTML ="";
+                    location.reload();
+                }, 1000);
             }, 60000);
         }
 
 
         dibujarFichas() {
+            //Arma los grupos de fichas con la ficha seleccionada por cada jugador
+            //Al ser una ficha puesta en el tablero la misma es borrada.
             document.getElementById("fichas-1").innerHTML = "";
             document.getElementById("fichas-2").innerHTML = "";
             for (let i = 0; i < this.width * this.height; i++) {
@@ -102,6 +124,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         ponerFicha(columna) {
+            //Funcion dedicada a poner la ficha en el tablero, la ubica en la ultima posicion libre que encuentra
+            //Si la columna esta llena muestra un mensaje indicándolo
             let lastIndexOf0 = this.board[columna].lastIndexOf(0);
             if (lastIndexOf0 != -1) {
                 this.board[columna][lastIndexOf0] = this.currentPlayer;
@@ -126,6 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         setFichaJ1(imgSrc) {
+            //Funcion que asigna la imagen que cada jugador utilizará.
             this.fichaj1 = imgSrc;
             if (this.fichaj2 != "") {
                 this.iniciarTablero();
@@ -133,6 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         setFichaJ2(imgSrc) {
+            //Funcion que asigna la imagen que cada jugador utilizará.
             this.fichaj2 = imgSrc;
             if (this.fichaj1 != "") {
                 this.iniciarTablero()
@@ -141,12 +167,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         iniciarTablero() {
+            //Llama a las tres funciones principales del juego, armando el tablero para poder jugar.
             this.pintarTablero();
             this.pintarHeader();
             this.dibujarFichas();
         }
 
         getGanador(columna, fila) {
+            //Controla si hay ganadores cuando una ficha es puesta en el tablero.
             this.verificarHorizontalmente(columna, fila);
             this.verificarVerticalmente(columna, fila);
             this.verificarDiagonalmenteIzquierdaDerecha(columna, fila)
@@ -266,22 +294,28 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         imprimirGanador() {
-            document.getElementById("ganador").innerHTML = "Gano el jugador " + this.currentPlayer;
+            //Notifica al usuario quién fue el ganador y reinicia el tablero, manteniendo la configuración de juego.
+            document.getElementById("title").innerHTML = "Gano el jugador " + this.currentPlayer+ ", reiniciando tablero.";
             setTimeout(() => {
-                document.getElementById("ganador").innerHTML = "";
+                document.getElementById("segundos").innerHTML = "";
                 this.restart();
-            }, 2000);
+                document.getElementById("title").innerHTML = "X en linea";
+            }, 3000);
+            
         }
 
         restart() {
+            //Vacía la matriz de la lógica del juego e inicia un tablero vacío, setea el turno al jugador 1.
             this.board = [];
             this.iniciarTablero();
             this.currentPlayer = 1;
         }
     }
 
-    let tablero = new Juego(columnas, filas);
+    let tablero = new Juego(columnas, filas); //Instancia de la clase juego.
 
+
+    //Cambia el tamaño del tablero de juego basado en la cantidad de fichas en línea que quiera juegar el usuario.
     document.getElementById('enLinea').addEventListener('change', () => {
         enLinea = parseInt(document.getElementById('enLinea').value);
         if (enLinea > 1) {
@@ -296,6 +330,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    //Permite al usuario elegir una imagen personalizada para el jugador 1.
+    //Deshabilita la seleccion de imagen y ficha predeterminada.
     document.querySelector(".j1").addEventListener("change", (e) => {
         let reader = new FileReader();
         reader.onload = function (event) {
@@ -307,6 +343,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    //Permite al usuario elegir una imagen personalizada para el jugador 2.
+    //Deshabilita la seleccion de imagen y ficha predeterminada.
     document.querySelector(".j2").addEventListener("change", (e) => {
         let reader = new FileReader();
         reader.onload = function (event) {
@@ -318,6 +356,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    //Permite al usuario elegir una imagen predetermianda para el jugador 1.
+    //Deshabilita la seleccion de imagen y ficha predeterminada. 
     document.getElementById("detj1").addEventListener('click', function () {
         let imgSrc = "img/ficha-roja.png";
         tablero.setFichaJ1(imgSrc);
@@ -326,6 +366,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    //Permite al usuario elegir una imagen predeterminada para el jugador 2.
+    //Deshabilita la seleccion de imagen y ficha predeterminada.
     document.getElementById("detj2").addEventListener('click', function () {
         let imgSrc = "img/ficha-azul.png";
         tablero.setFichaJ2(imgSrc);
