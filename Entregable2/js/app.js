@@ -79,20 +79,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
             let segundos = 60;
-            setInterval(() => {
+            let interval = setInterval(() => {
                 document.getElementById("labelsecs").innerHTML = "Turno del jugador " + this.currentPlayer;
                 document.getElementById("segundos").innerHTML = segundos + "s";
                 segundos--;
             }, 1000);
             setTimeout(() => {
-                //this.restart();
-                
                 document.getElementById("labelsecs").innerHTML ="Limite de tiempo alcanzado, reiniciando juego.";
-                
-                setInterval(() => {
-                    document.getElementById("labelsecs").innerHTML ="";
-                    location.reload();
-                }, 1000);
+                setTimeout(() => {
+                    this.restart();
+                }, 3000);
+                clearInterval(interval);
             }, 60000);
         }
 
@@ -134,8 +131,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 img.onload = function () {
                     ctx.drawImage(img, columna * 50, lastIndexOf0 * 50, 50, 50);
                 }
-                console.log(lastIndexOf0);
-
                 img.src = this.currentPlayer == 1 ? this.fichaj1 : this.fichaj2;
 
                 this.currentPlayer = this.currentPlayer == 1 ? 2 : 1;
@@ -306,6 +301,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         restart() {
             //Vacía la matriz de la lógica del juego e inicia un tablero vacío, setea el turno al jugador 1.
+            for (let i = 1; i < 99999; i++)
+                window.clearInterval(i);
             this.board = [];
             this.iniciarTablero();
             this.currentPlayer = 1;
@@ -332,47 +329,43 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //Permite al usuario elegir una imagen personalizada para el jugador 1.
     //Deshabilita la seleccion de imagen y ficha predeterminada.
-    document.querySelector(".j1").addEventListener("change", (e) => {
-        let reader = new FileReader();
-        reader.onload = function (event) {
-            tablero.setFichaJ1(event.target.result);
-        }
-        reader.readAsDataURL(document.querySelector(".j1").files[0]);
-        if (document.getElementById("elegir-fichas-1")) {
-            document.getElementById("elegir-fichas-1").remove();
-        }
-    });
+    document.querySelectorAll(".j1").forEach(el => {
+        el.addEventListener("change", (e) => {
+            if (el.files) {
+                let reader = new FileReader();
+                reader.onload = function (event) {
+                    tablero.setFichaJ1(event.target.result);
+                }
+                reader.readAsDataURL(el.files[0]);
+            }
+            else {
+                tablero.setFichaJ2(`img/${el.value}`)
+            }
+            if (document.getElementById("elegir-fichas-1")) {
+                document.getElementById("elegir-fichas-1").remove();
+            }
+        });
+        
+    })
 
     //Permite al usuario elegir una imagen personalizada para el jugador 2.
     //Deshabilita la seleccion de imagen y ficha predeterminada.
-    document.querySelector(".j2").addEventListener("change", (e) => {
-        let reader = new FileReader();
-        reader.onload = function (event) {
-            tablero.setFichaJ2(event.target.result);
-        }
-        reader.readAsDataURL(document.querySelector(".j2").files[0]);
-        if (document.getElementById("elegir-fichas-2")) {
-            document.getElementById("elegir-fichas-2").remove();
-        }
-    });
-
-    //Permite al usuario elegir una imagen predetermianda para el jugador 1.
-    //Deshabilita la seleccion de imagen y ficha predeterminada. 
-    document.getElementById("detj1").addEventListener('click', function () {
-        let imgSrc = "img/ficha-roja.png";
-        tablero.setFichaJ1(imgSrc);
-        if (document.getElementById("elegir-fichas-1")) {
-            document.getElementById("elegir-fichas-1").remove();
-        }
-    });
-
-    //Permite al usuario elegir una imagen predeterminada para el jugador 2.
-    //Deshabilita la seleccion de imagen y ficha predeterminada.
-    document.getElementById("detj2").addEventListener('click', function () {
-        let imgSrc = "img/ficha-azul.png";
-        tablero.setFichaJ2(imgSrc);
-        if (document.getElementById("elegir-fichas-2")) {
-            document.getElementById("elegir-fichas-2").remove();
-        }
-    });
+    document.querySelectorAll(".j2").forEach(el => {
+        el.addEventListener("change", (e) => {
+            if (el.files) {
+                let reader = new FileReader();
+                reader.onload = function (event) {
+                    tablero.setFichaJ2(event.target.result);
+                }
+                reader.readAsDataURL(el.files[0]);
+            }
+            else {
+                tablero.setFichaJ2(`img/${el.value}`)
+            }
+            if (document.getElementById("elegir-fichas-2")) {
+                document.getElementById("elegir-fichas-2").remove();
+            }
+        });
+        
+    })
 });
