@@ -339,7 +339,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 reader.readAsDataURL(el.files[0]);
             }
             else {
-                tablero.setFichaJ2(`img/${el.value}`)
+                tablero.setFichaJ1(`img/${el.value}`)
             }
             if (document.getElementById("elegir-fichas-1")) {
                 document.getElementById("elegir-fichas-1").remove();
