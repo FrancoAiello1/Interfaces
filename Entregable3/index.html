@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practico entregable N°3</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <p id="puntos">0</p>
+    <div id="fondo">
+        <p id="puntos"></p>
+        <div id="div-moneda" class="div-moneda">
+            <div style="display: flex; justify-content: flex-end; position: relative; bottom: -150px;">
+                <div id="moneda" class="move-coin"></div>
+            </div>
+        </div>
+        <div id="gb"></div>
+    </div>
+
+    <script>
+        document.addEventListener("keypress", (e) => {
+            document.getElementById("gb").classList.add("up");
+            let search = true;
+            setTimeout(() => {
+                document.getElementById("gb").classList.remove("up");
+                search = false;
+            }, 1000);
+            while (search) {
+                let distance = Math.abs(document.getElementById("moneda").getBoundingClientRect().left - document.getElementById("gb").getBoundingClientRect().left);
+                if (distance > 500)
+                    break;
+                if (distance < 150) {
+                    search = false;
+                    document.getElementById("moneda").classList.remove("move-coin");
+                    document.getElementById("div-moneda").classList.remove("div-moneda");
+                    document.getElementById("puntos").innerHTML = parseInt(document.getElementById("puntos").innerHTML) + 1;
+                    setTimeout(() => {
+                        document.getElementById("moneda").classList.add("move-coin");
+                        document.getElementById("div-moneda").classList.add("div-moneda");
+                    }, Math.floor(Math.random() * 15000));
+                    break;
+                }
+            }
+        })
+
+    </script>
+
+</body>
+</html>

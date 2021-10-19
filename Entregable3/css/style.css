@@ -1,0 +1,76 @@
+body{
+    background:url('../img/parallax.png') repeat-x;
+    animation: movebg 3s linear infinite;
+}
+
+
+#gb {
+    position: relative;
+    bottom: -200px;
+    width:104px;
+    height:150px;
+    background:url(https://cdn.rawgit.com/ManzDev/cursos-assets/gh-pages/css3/monkey-guybrush.png) no-repeat;
+    animation:gbwalk 1s steps(6) infinite;
+    margin:auto;
+  }
+
+  .move-coin {
+      width: 57px;
+      height: 50px;
+      background:url(../img/moneda.png);
+      animation: coin-rotate 1s steps(6) infinite;
+      
+  }
+
+  .div-moneda{
+    animation: coin-moveY 1s linear infinite;
+    animation: coin-moveX 5s linear infinite;
+  }
+
+  .up {
+    animation: MoveUpDown 1s linear infinite !important;
+  }
+
+  @keyframes coin-moveX{
+    100% {
+      transform: translateX(-100%);
+    }
+    50% {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes coin-moveY{
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes coin-rotate{
+    0%{background-position: 0}
+    100% {background-position: -346px}
+  }
+
+  @keyframes gbwalk {
+    0% { background-position:0 }
+    100% { background-position:-624px }
+  }
+
+
+@keyframes movebg {
+    0% { background-position:0% } 
+    100% { background-position:100% }
+  }
+  
+  @keyframes MoveUpDown {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-100px);
+      
+    }
+  }
