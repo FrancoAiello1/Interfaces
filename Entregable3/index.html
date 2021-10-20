@@ -5,49 +5,49 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Practico entregable N°3</title>
+    <title>TP Entregable N°3</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body>
-    <p id="puntos">0</p>
-    <div id="fondo">
-        <p id="puntos"></p>
-        <div id="div-moneda" class="div-moneda">
-            <div style="display: flex; justify-content: flex-end; position: relative; bottom: -150px;">
-                <div id="moneda" class="move-coin"></div>
+<body id="background1">
+
+    <div id="instrucciones">
+        <div>
+            <h1>Pana bern</h1>
+            <h3>Agarrá 5 monedas para ganar!</h3>
+            <h4>Elegí el escenario:</h4>
+            <div id="escenario">
+                <div>
+                    <img class="selectEscenario" id="escenario1" onclick="changeBackground()">
+                    <img class="selectEscenario" id="escenario2" onclick="changeBackground()">
+                </div>
             </div>
         </div>
-        <div id="gb"></div>
+        <button id="start" onclick=play()>Empezar</button>
     </div>
 
     <script>
-        document.addEventListener("keypress", (e) => {
-            document.getElementById("gb").classList.add("up");
-            let search = true;
-            setTimeout(() => {
-                document.getElementById("gb").classList.remove("up");
-                search = false;
-            }, 1000);
-            while (search) {
-                let distance = Math.abs(document.getElementById("moneda").getBoundingClientRect().left - document.getElementById("gb").getBoundingClientRect().left);
-                if (distance > 500)
-                    break;
-                if (distance < 150) {
-                    search = false;
-                    document.getElementById("moneda").classList.remove("move-coin");
-                    document.getElementById("div-moneda").classList.remove("div-moneda");
-                    document.getElementById("puntos").innerHTML = parseInt(document.getElementById("puntos").innerHTML) + 1;
-                    setTimeout(() => {
-                        document.getElementById("moneda").classList.add("move-coin");
-                        document.getElementById("div-moneda").classList.add("div-moneda");
-                    }, Math.floor(Math.random() * 15000));
-                    break;
-                }
+        function play() {
+            location.href = 'play.html'
+        }
+
+        function changeBackground() {
+            //document.getElementById("body").classList.toggle("background2");
+
+            let elem =  document.querySelector("body");
+            if (elem.id == "background1") {
+               console.log("2");
+               elem.classList.toggle("background2");
+            } else if (elem.id == "background2") {
+                console.log("1");
+                elem.idclassList.toggle("background1");
             }
-        })
+            
+
+        }
 
     </script>
 
 </body>
+
 </html>
