@@ -10,21 +10,31 @@
 </head>
 
 <body id="background1">
-
-    <div id="instrucciones">
-        <div>
-            <h1>Pana bern</h1>
-            <h3>Agarrá 5 monedas para ganar!</h3>
-            <h4>Elegí el escenario:</h4>
-            <div id="escenario">
-                <div>
-                    <img class="selectEscenario" id="escenario1" onclick="changeBackground()">
-                    <img class="selectEscenario" id="escenario2" onclick="changeBackground()">
+     <section>
+        <img id="capa8">
+        <img id="capa7">
+        <img id="capa6">
+        <img id="capa5">
+        <img id="capa4">
+        <img id="capa3">
+        <img id="capa2">
+        <img id="capa1">
+        <div id="instrucciones">
+            <div>
+                <h1>Pana bern</h1>
+                <h3>Agarrá 5 monedas para ganar!</h3>
+                <h4>Elegí el escenario:</h4>
+                <div id="escenario">
+                    <div>
+                        <img class="selectEscenario" id="escenario1" onclick="changeBackground()">
+                        <img class="selectEscenario" id="escenario2" onclick="changeBackground()">
+                    </div>
                 </div>
             </div>
+            <button id="start" onclick=play()>Empezar</button>
         </div>
-        <button id="start" onclick=play()>Empezar</button>
-    </div>
+    </section> 
+    
 
     <script>
         function play() {
@@ -34,15 +44,15 @@
         function changeBackground() {
             //document.getElementById("body").classList.toggle("background2");
 
-            let elem =  document.querySelector("body");
+            let elem = document.querySelector("body");
             if (elem.id == "background1") {
-               console.log("2");
-               elem.classList.toggle("background2");
+                console.log("2");
+                elem.classList.toggle("background2");
             } else if (elem.id == "background2") {
                 console.log("1");
                 elem.idclassList.toggle("background1");
             }
-            
+
 
         }
 

@@ -1,7 +1,104 @@
-body, .background1{
-    background:url('../img/parallax.png') repeat-x;
-    animation: movebg 8s linear infinite;
+body{
+  padding: 0;
+  margin: 0;
 }
+
+section{
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  
+}
+
+/* section > img{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  animation: parallaxScroll 8s linear infinite;
+  
+} */
+
+#capa8{
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../img/parallax/background1/capa8.png");
+  animation: parallaxScroll 20s linear infinite;
+  
+}
+
+#capa7{
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../img/parallax/background1/capa7.png");
+  animation: parallaxScroll 20s linear infinite;
+}
+
+#capa6{
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../img/parallax/background1/capa6.png");
+  animation: parallaxScroll 15s linear infinite;
+}
+
+#capa5{
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../img/parallax/background1/capa5.png");
+  animation: parallaxScroll 15s linear infinite;
+}
+
+#capa4{
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../img/parallax/background1/capa4.png");
+  animation: parallaxScroll 12s linear infinite;
+}
+
+#capa3{
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../img/parallax/background1/capa3.png");
+  animation: parallaxScroll 12s linear infinite;
+}
+
+#capa2{
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../img/parallax/background1/capa2.png");
+  animation: parallaxScroll 10s linear infinite;
+}
+
+#capa1{
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../img/parallax/background1/capa1.png");
+  animation: parallaxScroll 8s linear infinite;
+}
+ 
 
 .background2{
   background:url('../img/background2.jpg') repeat-x;
@@ -15,11 +112,13 @@ body, .background1{
   justify-content: center;
   align-items: center;
   margin-top: 5%;
+  position: relative;
 }
 
 .selectEscenario{
   width: 192px;
   height: 108px;
+  cursor: pointer;
 }
 
 #escenario1{
@@ -76,7 +175,7 @@ body, .background1{
 }
 
 p{
-  
+  position:relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -84,7 +183,7 @@ p{
 }
 
 #gb {
-    position: relative;
+    position:relative;
     bottom: -200px;
     width:104px;
     height:150px;
@@ -102,7 +201,14 @@ p{
   }
 
   .div-moneda{
+    
+    display: flex;
+    justify-content: flex-end;
+    
     animation: coin-moveY 1s linear infinite, coin-moveX 5s linear infinite;
+    border: 1px solid black;
+    
+    
   }
 
   .up {
@@ -137,6 +243,10 @@ p{
     100% { background-position:-624px }
   }
 
+  @keyframes parallaxScroll {
+    0% { background-position: 1920px} 
+    100% { background-position:0 }
+  }
 
 @keyframes movebg {
     0% { background-position: 1920px} 
