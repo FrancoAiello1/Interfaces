@@ -13,29 +13,34 @@
 
 
 
-    <!-- <section> -->
-     <!--    <img id="capa8">
+    <section>
+        <img id="capa8">
         <img id="capa7">
         <img id="capa6">
         <img id="capa5">
         <img id="capa4">
         <img id="capa3">
         <img id="capa2">
-        <img id="capa1"> -->
+        <img id="capa1">
         <div id="play">
 
             <p id="puntos">0</p>
             <div id="fondo">
                 <p></p>
-                <div id="div-moneda" class="div-moneda">
-                    <!-- <div style="display: flex; justify-content: flex-end; position: relative; bottom: -150px;"> -->
-                        <div id="moneda" class="move-coin" ></div>
-                   <!--  </div>  -->
+                <div id="div-moneda" class="div-moneda" style="width: 1920px;">
+                    <div style="display: flex; justify-content: flex-end; position: relative; bottom: -150px;">
+                        <div id="moneda" class="move-coin"></div>
+                    </div>
                 </div>
                 <div id="gb"></div>
+                <div class="div-scissors" style="width: 1920px;">
+                    <div style="display: flex; justify-content: flex-end; position: relative;">
+                        <div id="scissors"></div>
+                    </div>
+                </div>
             </div>
         </div>
-  <!--   </section> -->
+    </section>
 
 
     <script>
@@ -43,35 +48,27 @@
         document.onkeydown = function (event) {
             if (!event.repeat) {
                 document.getElementById("gb").classList.add("up");
-                let search = true;
+                let agarro = false;
                 setTimeout(() => {
                     document.getElementById("gb").classList.remove("up");
-                    search = false;
                 }, 1000);
-                while (search) {
-                    let distance = Math.abs(document.getElementById("moneda").getBoundingClientRect().x) - Math.abs(document.getElementById("moneda").getBoundingClientRect().bottom - (document.getElementById("gb").getBoundingClientRect().top - 110));
-                    console.log("pana" + Math.abs(document.getElementById("moneda").getBoundingClientRect().bottom - document.getElementById("gb").getBoundingClientRect().top));
-                    console.log("moneda" + Math.abs(document.getElementById("moneda").getBoundingClientRect().x));
-                    if (distance > 500)
-                        console.log("lejos");
-                    search = false;
-                    if (distance > 500 && distance < 600) {
-                        console.log("anashi B)")
-                        search = false;
+                console.log("a");
+                let distance = document.getElementById("moneda").getBoundingClientRect().x - document.getElementById("gb").getBoundingClientRect().x;
+                if (distance <= 321 && distance > 0) {
+                    setTimeout(() => {
                         document.getElementById("moneda").classList.remove("move-coin");
                         document.getElementById("div-moneda").classList.remove("div-moneda");
-                        document.getElementById("puntos").innerHTML = parseInt(document.getElementById("puntos").innerHTML) + 1;
-                        setTimeout(() => {
-                            document.getElementById("moneda").classList.add("move-coin");
-                            document.getElementById("div-moneda").classList.add("div-moneda");
-                        }, Math.floor(Math.random() * 10000));
-                        break;
-                    }
+                    }, distance)
+                    document.getElementById("puntos").innerHTML = parseInt(document.getElementById("puntos").innerHTML) + 1;
+                    agarro = true;
+                    setTimeout(() => {
+                        document.getElementById("moneda").classList.add("move-coin");
+                        document.getElementById("div-moneda").classList.add("div-moneda");
+                    }, Math.floor(Math.random() * 10000) + distance);
                 }
+
             }
         }
-
-
     </script>
 
 </body>

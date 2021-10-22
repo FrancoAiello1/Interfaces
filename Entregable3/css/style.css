@@ -182,6 +182,22 @@ p{
   align-items: center;
 }
 
+.div-scissors {
+    display: flex;
+    justify-content: flex-end;
+    animation: coin-moveY 1s linear infinite, coin-moveX 5s linear infinite;
+}
+
+#scissors {
+  position:relative;
+  width: 91px;
+  height: 71px;
+  bottom: -150px;
+  background-image:url("../img/scissors.png");
+  animation: scissors 1s steps(7) infinite;
+  margin:auto;
+}
+
 #gb {
     position:relative;
     bottom: -200px;
@@ -190,6 +206,8 @@ p{
     background:url(https://cdn.rawgit.com/ManzDev/cursos-assets/gh-pages/css3/monkey-guybrush.png) no-repeat;
     animation:gbwalk 1s steps(6) infinite;
     margin:auto;
+    display: flex;
+    justify-content: flex-end;
   }
 
   .move-coin {
@@ -206,7 +224,7 @@ p{
     justify-content: flex-end;
     
     animation: coin-moveY 1s linear infinite, coin-moveX 5s linear infinite;
-    border: 1px solid black;
+    
     
     
   }
@@ -236,6 +254,11 @@ p{
   @keyframes coin-rotate{
     0%{background-position: 0}
     100% {background-position: -346px}
+  }
+
+  @keyframes scissors{
+    0% { background-position:0 }
+    100% { background-position:-640px }
   }
 
   @keyframes gbwalk {
