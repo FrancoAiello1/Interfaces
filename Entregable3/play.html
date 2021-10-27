@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TP Entregable N°3</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="js/script.js"></script>
 </head>
 
 <body id="background1">
@@ -32,7 +33,7 @@
                         <div id="moneda" class="move-coin"></div>
                     </div>
                 </div>
-                <div id="gb"></div>
+                <div id="gb" class="gb"></div>
                 <div class="div-scissors" style="width: 1920px;">
                     <div style="display: flex; justify-content: flex-end; position: relative;">
                         <div id="scissors"></div>
@@ -41,36 +42,6 @@
             </div>
         </div>
     </section>
-
-
-    <script>
-
-        document.onkeydown = function (event) {
-            if (!event.repeat) {
-                document.getElementById("gb").classList.add("up");
-                let agarro = false;
-                setTimeout(() => {
-                    document.getElementById("gb").classList.remove("up");
-                }, 1000);
-                console.log("a");
-                let distance = document.getElementById("moneda").getBoundingClientRect().x - document.getElementById("gb").getBoundingClientRect().x;
-                if (distance <= 321 && distance > 0) {
-                    setTimeout(() => {
-                        document.getElementById("moneda").classList.remove("move-coin");
-                        document.getElementById("div-moneda").classList.remove("div-moneda");
-                    }, distance)
-                    document.getElementById("puntos").innerHTML = parseInt(document.getElementById("puntos").innerHTML) + 1;
-                    agarro = true;
-                    setTimeout(() => {
-                        document.getElementById("moneda").classList.add("move-coin");
-                        document.getElementById("div-moneda").classList.add("div-moneda");
-                    }, Math.floor(Math.random() * 10000) + distance);
-                }
-
-            }
-        }
-    </script>
-
 </body>
 
 </html>

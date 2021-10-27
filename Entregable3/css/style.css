@@ -198,23 +198,32 @@ p{
   margin:auto;
 }
 
-#gb {
+.gb {
     position:relative;
     bottom: -200px;
     width:104px;
     height:150px;
-    background:url(https://cdn.rawgit.com/ManzDev/cursos-assets/gh-pages/css3/monkey-guybrush.png) no-repeat;
+    background:url(../img/guybush.png) no-repeat;
     animation:gbwalk 1s steps(6) infinite;
     margin:auto;
     display: flex;
     justify-content: flex-end;
   }
 
+
+
+.gbjump{
+
+    background:url(../img/jump.png) no-repeat ;
+    animation: gbjump 1s steps(2) infinite, MoveUpDown 1s linear infinite !important;
+
+  }
+
   .move-coin {
       width: 57px;
       height: 50px;
       background:url(../img/moneda.png);
-      animation: coin-rotate 1s steps(6) infinite;
+      animation: coin-rotate 1s steps(6) infinite ;
       
   }
 
@@ -227,10 +236,6 @@ p{
     
     
     
-  }
-
-  .up {
-    animation: MoveUpDown 1s linear infinite !important;
   }
 
   @keyframes coin-moveX{
@@ -265,6 +270,12 @@ p{
     0% { background-position:0 }
     100% { background-position:-624px }
   }
+
+  @keyframes gbjump{
+    0% { background-position:0 }
+    100% { background-position:-212px }
+  }
+
 
   @keyframes parallaxScroll {
     0% { background-position: 1920px} 
