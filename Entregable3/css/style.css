@@ -99,10 +99,33 @@ section{
   animation: parallaxScroll 8s linear infinite;
 }
  
-
-.background2{
-  background:url('../img/background2.jpg') repeat-x;
-  animation: movebg 8s linear infinite;
+.back2-1{
+  background-image: url("../img/parallax/background2/capa1.png") !important ;
+}
+  
+.back2-2{
+  background-image: url("../img/parallax/background2/capa2.png") !important;
+  
+}
+.back2-3{
+  background-image: url("../img/parallax/background2/capa3.png")!important ;
+  
+}
+.back2-4{
+  background-image: url("../img/parallax/background2/capa4.png")!important ;
+  
+}
+.back2-5{
+  background-image: url("../img/parallax/background2/capa5.png")!important ;
+  
+}
+.back2-6{
+  background-image: url("../img/parallax/background2/capa6.png")!important ;
+  
+}
+.back2-7{
+  background-image: url("../img/parallax/background2/capa7.png")!important ;
+  
 }
 
 
@@ -122,11 +145,11 @@ section{
 }
 
 #escenario1{
-  background-image: url("../img/parallax.small.png") ;
+  background-image: url("../img/background1.png") ;
 }
 
 #escenario2{
-  background-image: url("../img/background2.small.jpg") ;
+  background-image: url("../img/background2.png") ;
 }
 
 #start {

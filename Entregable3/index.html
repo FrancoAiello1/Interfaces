@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TP Entregable N°3</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="js/script.js"></script>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 
 <body id="background1">
@@ -19,45 +21,45 @@
         <img id="capa3">
         <img id="capa2">
         <img id="capa1">
+
+        <section id="game" class="game">
+    
+            <div id="play">
+    
+                <p id="puntos">0</p>
+                <div id="fondo">
+                    <p></p>
+                    <div id="div-moneda" class="div-moneda" style="width: 1920px;">
+                        <div style="display: flex; justify-content: flex-end; position: relative; bottom: -150px;">
+                            <div id="moneda" class="move-coin"></div>
+                        </div>
+                    </div>
+                    <div id="gb" class="gb"></div>
+                    <div class="div-scissors" style="width: 1920px;">
+                        <div style="display: flex; justify-content: flex-end; position: relative;">
+                            <div id="scissors"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <div id="instrucciones">
             <div>
-                <h1>Pana bern</h1>
+                <h1 style=" text-decoration: underline black;">Jumping pana</h1>
                 <h3>Agarrá 5 monedas para ganar!</h3>
+                <h3>Saltá con la barra espaciadora para esquivar las tijeras!</h3>
                 <h4>Elegí el escenario:</h4>
                 <div id="escenario">
                     <div>
-                        <img class="selectEscenario" id="escenario1" onclick="changeBackground()">
-                        <img class="selectEscenario" id="escenario2" onclick="changeBackground()">
+                        <img class="selectEscenario" id="escenario1" onclick="background1()">
+                        <img class="selectEscenario" id="escenario2" onclick="background2()">
                     </div>
                 </div>
             </div>
             <button id="start" onclick=play()>Empezar</button>
-            
         </div>
     </section> 
-    
-
-    <script>
-        function play() {
-            location.href = 'play.html'
-        }
-
-        function changeBackground() {
-            //document.getElementById("body").classList.toggle("background2");
-
-            let elem = document.querySelector("body");
-            if (elem.id == "background1") {
-                console.log("2");
-                elem.classList.toggle("background2");
-            } else if (elem.id == "background2") {
-                console.log("1");
-                elem.idclassList.toggle("background1");
-            }
-
-
-        }
-
-    </script>
 
 </body>
 
