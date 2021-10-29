@@ -173,7 +173,7 @@ section{
   position: relative;
 }
 
-#instrucciones, #ganador{
+#instrucciones, #ganador, #perdedor{
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -224,6 +224,20 @@ section{
   -moz-box-shadow: none; 
   box-shadow: none;
   
+}
+#perdedor > div {
+  -webkit-border-radius: 8px/7px; 
+  -moz-border-radius: 8px/7px; 
+  border-radius: 8px/7px; 
+  background-color: #ebebeb8c; 
+  -webkit-box-shadow: 1px 2px 5px rgba(0,0,0,.31); 
+  -moz-box-shadow: 1px 2px 5px rgba(0,0,0,.31); 
+  box-shadow: 1px 2px 5px rgba(0,0,0,.31); 
+  border: solid 1px #cbc9c9;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 #ganador > div {
@@ -300,12 +314,16 @@ p{
 
   }
 
+  .gbdead{
+    background:url(../img/mueres.png) no-repeat ;
+    animation: gbdead 1s steps(3) !important;
+  }
 
   .explode-coin{
     width: 57px;
     height: 50px;
-    background:url(../img/monedarota.png) !important;
-    animation: coin-explode 1s steps(6) !important ; 
+    background:url(../img/monedarota.png) ;
+    animation: coin-explode 1s steps(6) ; 
   }
 
   .move-coin {
@@ -326,6 +344,10 @@ p{
     
   }
 
+  @keyframes gbdead{
+    0% { background-position:0 }
+    100% { background-position:-334px }
+  }
 
   @keyframes coin-explode{
     0%{background-position: 0}
