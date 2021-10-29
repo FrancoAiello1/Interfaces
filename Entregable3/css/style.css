@@ -128,8 +128,52 @@ section{
   
 }
 
+.puntos{
+  -webkit-border-radius: 8px/7px; 
+  -moz-border-radius: 8px/7px; 
+  border-radius: 8px/7px; 
+  background-color: #ebebeb8c; 
+  -webkit-box-shadow: 1px 2px 5px rgba(0,0,0,.31); 
+  -moz-box-shadow: 1px 2px 5px rgba(0,0,0,.31); 
+  box-shadow: 1px 2px 5px rgba(0,0,0,.31); 
+  border: solid 1px #cbc9c9;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  margin-left: 45%;
+  padding-bottom: 8px;
+}
 
-#instrucciones {
+
+#puntos{
+  bottom: 14px;
+}
+
+#contenedorpuntos{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: white;
+  display: inline-block;
+  text-decoration: none;
+  height: 35px; 
+  width: 35px;
+  -webkit-border-radius: 5px; 
+  -moz-border-radius: 5px; 
+  border-radius: 5px; 
+  background-color: #3a57af; 
+  -webkit-box-shadow: 0 3px rgba(58,87,175,.75); 
+  -moz-box-shadow: 0 3px rgba(58,87,175,.75); 
+  box-shadow: 0 3px rgba(58,87,175,.75);
+  position: relative;
+}
+
+#instrucciones, #ganador{
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -180,6 +224,21 @@ section{
   -moz-box-shadow: none; 
   box-shadow: none;
   
+}
+
+#ganador > div {
+  -webkit-border-radius: 8px/7px; 
+  -moz-border-radius: 8px/7px; 
+  border-radius: 8px/7px; 
+  background-color: #ebebeb8c; 
+  -webkit-box-shadow: 1px 2px 5px rgba(0,0,0,.31); 
+  -moz-box-shadow: 1px 2px 5px rgba(0,0,0,.31); 
+  box-shadow: 1px 2px 5px rgba(0,0,0,.31); 
+  border: solid 1px #cbc9c9;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 #instrucciones > div {
@@ -234,7 +293,6 @@ p{
   }
 
 
-
 .gbjump{
 
     background:url(../img/jump.png) no-repeat ;
@@ -242,12 +300,19 @@ p{
 
   }
 
+
+  .explode-coin{
+    width: 57px;
+    height: 50px;
+    background:url(../img/monedarota.png) !important;
+    animation: coin-explode 1s steps(6) !important ; 
+  }
+
   .move-coin {
       width: 57px;
       height: 50px;
       background:url(../img/moneda.png);
-      animation: coin-rotate 1s steps(6) infinite ;
-      
+      animation: coin-rotate 1s steps(6) infinite ; 
   }
 
   .div-moneda{
@@ -259,6 +324,12 @@ p{
     
     
     
+  }
+
+
+  @keyframes coin-explode{
+    0%{background-position: 0}
+    100% {background-position: -346px}
   }
 
   @keyframes coin-moveX{

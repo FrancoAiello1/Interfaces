@@ -4,6 +4,7 @@ let tiempo = 0;
 
 document.addEventListener('DOMContentLoaded', (event) => {
     $("#game").hide();
+    $("#ganador").hide();
 });
 
 document.onkeydown = function (event) {
@@ -28,7 +29,7 @@ function jump() {
     setTimeout(() => {
         document.getElementById("gb").classList.remove("gbjump");
     }, 1000);
-    
+
     agarroMoneda();
 
 }
@@ -38,30 +39,38 @@ function agarroMoneda() {
     //y suma un punto.
     let distance = document.getElementById("moneda").getBoundingClientRect().x - document.getElementById("gb").getBoundingClientRect().x;
     if (distance <= 321 && distance > 0) {
+        //document.getElementById("moneda").classList.add("explode-coin"); ANIMACION DE EXPLOTAR MONEDA, VER COMO HACER Q ANDE NO PUDE xD 
         setTimeout(() => {
             document.getElementById("moneda").classList.remove("move-coin");
+            console.log("aca");
+
             document.getElementById("div-moneda").classList.remove("div-moneda");
+
         }, distance)
+
         sumarPuntos();
+
     }
 }
 
 function sumarPuntos() {
     //Agrega un punto por cada moneda obtenida, al llegar al limite se ejecuta la funcion ganador()
-    setTimeout(() => {document.getElementById("puntos").innerHTML = parseInt(document.getElementById("puntos").innerHTML) + 1;
-    agarro = true;
-    if (document.getElementById("puntos").innerHTML == puntajeMax) {
-        ganador();
-    }}, 500)
-    
+    setTimeout(() => {
+        document.getElementById("puntos").innerHTML = parseInt(document.getElementById("puntos").innerHTML) + 1;
+        agarro = true;
+        if (document.getElementById("puntos").innerHTML == puntajeMax) {
+            ganador();
+        }
+    }, 500)
+
 }
 
-function ganador(){
-
-    alert("nashe");
+function ganador() {
+    $("#game").hide();
+    $("#ganador").show();
 }
 
-function background2(){
+function background2() {
     console.log("yes");
     document.getElementById("capa1").classList.add("back2-1");
     document.getElementById("capa2").classList.add("back2-2");
@@ -73,7 +82,7 @@ function background2(){
     document.getElementById("capa8").classList.remove("capa8");
 }
 
-function background1(){
+function background1() {
     document.getElementById("capa1").classList.remove("back2-1");
     document.getElementById("capa2").classList.remove("back2-2");
     document.getElementById("capa3").classList.remove("back2-3");
@@ -87,5 +96,5 @@ function background1(){
 function play() {
     $("#game").show();
     $("#instrucciones").hide();
-    
+
 }

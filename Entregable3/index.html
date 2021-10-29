@@ -12,7 +12,7 @@
 </head>
 
 <body id="background1">
-     <section>
+    <section>
         <img id="capa8">
         <img id="capa7">
         <img id="capa6">
@@ -23,10 +23,14 @@
         <img id="capa1">
 
         <section id="game" class="game">
-    
+
             <div id="play">
-    
-                <p id="puntos">0</p>
+                <div class="puntos">
+                    <p>Tus puntos </p>
+                    <div id="contenedorpuntos">
+                        <p id="puntos">0</p>
+                    </div>
+                </div>
                 <div id="fondo">
                     <p></p>
                     <div id="div-moneda" class="div-moneda" style="width: 1920px;">
@@ -48,7 +52,7 @@
             <div>
                 <h1 style=" text-decoration: underline black;">Jumping pana</h1>
                 <h3>Agarrá 5 monedas para ganar!</h3>
-                <h3>Saltá con la barra espaciadora para esquivar las tijeras!</h3>
+                <h3>Saltá [Barra espaciadora] para esquivar las tijeras</h3>
                 <h4>Elegí el escenario:</h4>
                 <div id="escenario">
                     <div>
@@ -59,7 +63,17 @@
             </div>
             <button id="start" onclick=play()>Empezar</button>
         </div>
-    </section> 
+
+        <div id="ganador">
+            <div>
+                <h1 style=" text-decoration: underline black;">¡GANASTE!</h1>
+                <h3>Esquivaste todas las tijeras y agarraste 5 monedas</h3>
+                
+      
+            </div>
+            <button id="start" onclick="location.reload()">Jugar de nuevo</button>
+        </div>
+    </section>
 
 </body>
 
