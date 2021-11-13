@@ -67,10 +67,10 @@ function chocoTijera() {
     //se tocaron y ejecuta la funcion finJuego()
 
     let hitboxPanaIzq = document.getElementById("gb").getBoundingClientRect().left;
-    let hitboxPanaTop = document.getElementById("gb").getBoundingClientRect().top;
     let hitboxTijera = document.getElementById("scissors").getBoundingClientRect().left;
+    let distancia = parseInt(hitboxTijera) - parseInt(hitboxPanaIzq);
 
-    if (!tocaTijera && parseInt(hitboxTijera) - parseInt(hitboxPanaIzq) <= 0 && parseInt(hitboxTijera) - parseInt(hitboxPanaIzq) > -10 && parseInt(hitboxPanaTop) >= 540) {
+    if (distancia <= 70 && distancia > -70 && document.getElementsByClassName("gbjump").length == 0) {
         tocaTijera = true;
     }
     if (tocaTijera) {
