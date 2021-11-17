@@ -1,0 +1,4 @@
+h1, h2, table, h3, h4, p, a{
+    display: flex;
+    justify-content: center;
+}
